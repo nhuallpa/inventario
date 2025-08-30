@@ -6,10 +6,10 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Articulo {
+public class Item {
 
   private String id;
-  private String nombre;
-  private int cantidad;
+  private String name;
+  private int stock;
 
 }
