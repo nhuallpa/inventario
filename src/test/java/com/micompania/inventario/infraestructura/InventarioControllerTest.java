@@ -1,20 +1,40 @@
 package com.micompania.inventario.infraestructura;
 
+import com.micompania.inventario.dominio.Item;
 import com.micompania.inventario.dominio.ItemService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.mockito.Mockito.when;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
-@WebMvcTest({ItemController.class, ItemService.class})
+@WebMvcTest({ItemController.class})
 public class InventarioControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
+
+  @MockitoBean
+  private ItemService itemService;
+
+  @BeforeEach
+  public void setup() {
+    when(itemService.getItems()).thenReturn(List.of(
+            new Item("1", "Laptop", 10),
+            new Item("2", "Mouse", 50)));
+  }
 
   @Test
   public void getAllItems() throws Exception {
@@ -28,7 +48,7 @@ public class InventarioControllerTest {
 
   @Test
   public void getItemById() throws Exception {
-    this.mockMvc.perform(get(ItemController.ENDPOINT+"/{id}", "1"))
+    this.mockMvc.perform(get(ItemController.ENDPOINT + "/{id}", "1"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id").value("1"))
             .andExpect(jsonPath("$.name").value("Laptop"))
@@ -39,10 +59,10 @@ public class InventarioControllerTest {
   public void increaseStock() throws Exception {
     String requestBody = "{ \"quantity\": 5 }";
     this.mockMvc.perform(
-            post(ItemController.ENDPOINT + "/{id}/increase-stock", "1")
-                    .contentType("application/json")
-                    .content(requestBody)
-    )
+                    post(ItemController.ENDPOINT + "/{id}/increase-stock", "1")
+                            .contentType("application/json")
+                            .content(requestBody)
+            )
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id").value("1"))
             .andExpect(jsonPath("$.name").value("Laptop"))
@@ -53,15 +73,13 @@ public class InventarioControllerTest {
   public void decreaseStock() throws Exception {
     String requestBody = "{ \"quantity\": 3 }";
     this.mockMvc.perform(
-            post(ItemController.ENDPOINT + "/{id}/decrease-stock", "1")
-                    .contentType("application/json")
-                    .content(requestBody)
-    )
+                    post(ItemController.ENDPOINT + "/{id}/decrease-stock", "1")
+                            .contentType("application/json")
+                            .content(requestBody)
+            )
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id").value("1"))
             .andExpect(jsonPath("$.name").value("Laptop"))
             .andExpect(jsonPath("$.stock").value(7));
   }
-
-
 }
