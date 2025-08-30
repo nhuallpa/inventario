@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -26,11 +27,41 @@ public class InventarioControllerTest {
   }
 
   @Test
-  public void getInventarioById() throws Exception {
-    this.mockMvc.perform(get("/inventario/{id}", "1"))
+  public void getItemById() throws Exception {
+    this.mockMvc.perform(get(ItemController.ENDPOINT+"/{id}", "1"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id").value("1"))
-            .andExpect(jsonPath("$.nombre").value("Articulo 1"))
-            .andExpect(jsonPath("$.cantidad").value(10));
+            .andExpect(jsonPath("$.name").value("Laptop"))
+            .andExpect(jsonPath("$.stock").value(10));
   }
+
+  @Test
+  public void increaseStock() throws Exception {
+    String requestBody = "{ \"quantity\": 5 }";
+    this.mockMvc.perform(
+            post(ItemController.ENDPOINT + "/{id}/increase-stock", "1")
+                    .contentType("application/json")
+                    .content(requestBody)
+    )
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").value("1"))
+            .andExpect(jsonPath("$.name").value("Laptop"))
+            .andExpect(jsonPath("$.stock").value(15));
+  }
+
+  @Test
+  public void decreaseStock() throws Exception {
+    String requestBody = "{ \"quantity\": 3 }";
+    this.mockMvc.perform(
+            post(ItemController.ENDPOINT + "/{id}/decrease-stock", "1")
+                    .contentType("application/json")
+                    .content(requestBody)
+    )
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").value("1"))
+            .andExpect(jsonPath("$.name").value("Laptop"))
+            .andExpect(jsonPath("$.stock").value(7));
+  }
+
+
 }
