@@ -3,8 +3,10 @@ package com.micompania.inventario.infrastructure;
 import com.micompania.inventario.dominio.Item;
 import com.micompania.inventario.dominio.ItemRepository;
 import com.micompania.inventario.dominio.ItemService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.AllArgsConstructor;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
-  private final Log log = org.apache.commons.logging.LogFactory.getLog(ItemServiceImpl.class);
+  private final Log log = LogFactory.getLog(ItemServiceImpl.class);
 
   private final ItemRepository itemRepository;
 
@@ -38,6 +40,7 @@ public class ItemServiceImpl implements ItemService {
     return itemFound;
   }
 
+  @CircuitBreaker(name = "increaseStock")
   @CacheEvict(value = "items", key = "#id")
   public Item increaseStock(String id, int quantity) {
     List<Item> items = getAllItems();
@@ -52,6 +55,7 @@ public class ItemServiceImpl implements ItemService {
     return itemFound;
   }
 
+  @CircuitBreaker(name = "decreaseStock")
   @CacheEvict(value = "items", key = "#id")
   public Item decreaseStock(String id, int quantity) {
     List<Item> items = getAllItems();

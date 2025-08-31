@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: inventario
+
+management:
+  endpoint:
+    health:
+      show-details: always
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "prometheus,circuitbreakers"
+
+resilience4j.ratelimiter:
+  instances:
+    default:
+      limitForPeriod: 10
+      limitRefreshPeriod: 1s
+      timeoutDuration: 0
+      registerHealthIndicator: true
+      eventConsumerBufferSize: 100
