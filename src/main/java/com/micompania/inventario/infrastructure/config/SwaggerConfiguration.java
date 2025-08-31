@@ -1,4 +1,4 @@
-package com.micompania.inventario.infraestructura.config;
+package com.micompania.inventario.infrastructure.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;

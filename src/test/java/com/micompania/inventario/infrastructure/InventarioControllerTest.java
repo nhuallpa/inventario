@@ -1,18 +1,21 @@
-package com.micompania.inventario.infraestructura;
+package com.micompania.inventario.infrastructure;
 
 import com.micompania.inventario.dominio.Item;
-import com.micompania.inventario.dominio.ItemService;
+import com.micompania.inventario.dominio.ItemRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.when;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -20,18 +23,19 @@ import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest({ItemController.class})
+@SpringBootTest
+@AutoConfigureMockMvc
 public class InventarioControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
 
   @MockitoBean
-  private ItemService itemService;
+  private ItemRepository itemRepository;
 
   @BeforeEach
   public void setup() {
-    when(itemService.getItems()).thenReturn(List.of(
+    when(itemRepository.getAllItems()).thenReturn(List.of(
             new Item("1", "Laptop", 10),
             new Item("2", "Mouse", 50)));
   }
