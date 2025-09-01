@@ -1,7 +1,7 @@
-package com.micompania.inventario.infrastructure;
+package com.mycompany.inventory.infrastructure;
 
-import com.micompania.inventario.dominio.Item;
-import com.micompania.inventario.dominio.ItemRepository;
+import com.mycompany.inventory.domain.Item;
+import com.mycompany.inventory.domain.ItemRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,13 +9,11 @@ import static org.mockito.Mockito.when;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -60,10 +58,10 @@ public class InventarioControllerTest {
   }
 
   @Test
-  public void increaseStock() throws Exception {
+  public void incrementStock() throws Exception {
     String requestBody = "{ \"quantity\": 5 }";
     this.mockMvc.perform(
-                    post(ItemController.ENDPOINT + "/{id}/increase-stock", "1")
+                    put(ItemController.ENDPOINT + "/{id}/increment-stock", "1")
                             .contentType("application/json")
                             .content(requestBody)
             )
@@ -74,10 +72,10 @@ public class InventarioControllerTest {
   }
 
   @Test
-  public void decreaseStock() throws Exception {
+  public void decrementStock() throws Exception {
     String requestBody = "{ \"quantity\": 3 }";
     this.mockMvc.perform(
-                    post(ItemController.ENDPOINT + "/{id}/decrease-stock", "1")
+                    put(ItemController.ENDPOINT + "/{id}/decrement-stock", "1")
                             .contentType("application/json")
                             .content(requestBody)
             )

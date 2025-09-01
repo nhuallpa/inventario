@@ -1,8 +1,8 @@
-package com.micompania.inventario.infrastructure;
+package com.mycompany.inventory.infrastructure;
 
-import com.micompania.inventario.dominio.Item;
-import com.micompania.inventario.dominio.ItemRepository;
-import com.micompania.inventario.dominio.ItemService;
+import com.mycompany.inventory.domain.Item;
+import com.mycompany.inventory.domain.ItemRepository;
+import com.mycompany.inventory.domain.ItemService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.AllArgsConstructor;
 import org.apache.commons.logging.Log;
@@ -40,9 +40,9 @@ public class ItemServiceImpl implements ItemService {
     return itemFound;
   }
 
-  @CircuitBreaker(name = "increaseStock")
+  @CircuitBreaker(name = "incrementStock")
   @CacheEvict(value = "items", key = "#id")
-  public Item increaseStock(String id, int quantity) {
+  public Item incrementStock(String id, int quantity) {
     List<Item> items = getAllItems();
     Item itemFound = null;
     for (Item item: items) {
@@ -51,13 +51,13 @@ public class ItemServiceImpl implements ItemService {
         itemFound = item;
       }
     }
-    log.info("Increase item with id: " + id);
+    log.info("increment item with id: " + id);
     return itemFound;
   }
 
-  @CircuitBreaker(name = "decreaseStock")
+  @CircuitBreaker(name = "decrementStock")
   @CacheEvict(value = "items", key = "#id")
-  public Item decreaseStock(String id, int quantity) {
+  public Item decrementStock(String id, int quantity) {
     List<Item> items = getAllItems();
     Item itemFound = null;
     for (Item item: items) {
@@ -66,7 +66,7 @@ public class ItemServiceImpl implements ItemService {
         itemFound = item;
       }
     }
-    log.info("Decrease item with id: " + id);
+    log.info("decrement item with id: " + id);
     return itemFound;
   }
 }

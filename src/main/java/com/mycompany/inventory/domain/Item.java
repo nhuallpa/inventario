@@ -1,4 +1,4 @@
-package com.micompania.inventario.dominio;
+package com.mycompany.inventory.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

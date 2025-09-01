@@ -1,11 +1,12 @@
-package com.micompania.inventario.infrastructure;
+package com.mycompany.inventory.infrastructure;
 
-import com.micompania.inventario.dominio.Item;
+import com.mycompany.inventory.domain.Item;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,10 +37,10 @@ public class ItemController {
       return ResponseEntity.ok(itemFound);
   }
 
-  @PostMapping("/{id}/increase-stock")
-  public ResponseEntity<Item> increaseStock(@PathVariable String id, @RequestBody OperationStockRequest request) throws Exception {
+  @PutMapping("/{id}/increment-stock")
+  public ResponseEntity<Item> incrementStock(@PathVariable String id, @RequestBody OperationStockRequest request) throws Exception {
 
-    Item itemFound = this.itemServiceImpl.increaseStock(id, request.getQuantity());
+    Item itemFound = this.itemServiceImpl.incrementStock(id, request.getQuantity());
     if (itemFound == null) {
       return ResponseEntity.notFound().build();
     } else {
@@ -47,9 +48,9 @@ public class ItemController {
     }
   }
 
-  @PostMapping("/{id}/decrease-stock")
-  public ResponseEntity<Item> decreaseStock(@PathVariable String id, @RequestBody OperationStockRequest request) throws Exception {
-    Item itemFound = itemServiceImpl.decreaseStock(id, request.getQuantity());
+  @PutMapping("/{id}/decrement-stock")
+  public ResponseEntity<Item> decrementStock(@PathVariable String id, @RequestBody OperationStockRequest request) throws Exception {
+    Item itemFound = itemServiceImpl.decrementStock(id, request.getQuantity());
     if (itemFound == null) {
       return ResponseEntity.notFound().build();
     } else {

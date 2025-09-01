@@ -1,58 +1,80 @@
 # Inventario 
 
-_Se expone una **REST API** para gestionar un inventario de articulos para la venta en sucursales_
+A REST API is provided to manage an inventory of items for sale in branches.
 
-## Comenzando 🚀
+## Getting Started 🚀
 
-_Estas instrucciones te permitirán obtener una copia del proyecto en funcionamiento en tu máquina local para propósitos de desarrollo y pruebas._
+These instructions will help you set up a copy of the project and run it on your local machine for development and testing purposes.
 
-Mira **Deployment** para conocer como desplegar el proyecto.
-
+Look at the [Architecture Decision Record](./ADR.md) for more details about the architecture decisions.
 
 ### Pre-requisitos 📋
 
-_Que cosas necesitas para instalar el software_
+What you need to install the software
 
 ```
 Java JDK 21
 Gradle
 ```
 
-### Instalación 🔧
+### Installation 🔧
 
-_Clonar el repositorio en la maquina local e instalar las dependencias con maven_
+Clone the repository on your local machine and install the dependencies with gradle tool
 
 ```bash
 ./gradlew build
 ```
 
-## Ejecutando las pruebas ⚙️
+## Running the tests ⚙️
 
-_Para ejecutar las pruebas unitarias y de integración, utilizar el siguiente comando_
+To run the unit and integration tests, use the following command
 
 ```bash
 ./gradlew test
 ```
 
-## Levantar servidor Local ⚙️
+## Starting the Local Server ⚙️
 
-_Por ultimo, puede levantar la instancia tomcat con el siguiente comando parado en la carpeta del proyecto_
+Finally, you can start the Tomcat instance with the following command from the project folder
 
 ```bash
 ./gradlew bootRun
 ```
 
-_Utilizar las siguientes URIs desde un browser o desde un REST Client para ejecutar operaciones_
+It's time to enjoy the application with the following request examples.
 
+## Request Examples 📦
+Requests can be made using curl or Postman. The server runs by default on port 8080.
+
+- Get All Items
+``` bash
+    curl --location 'http://localhost:8080/items'
 ```
-GET http://localhost:8080/articulos            // Consulta listado de personas
 
+- Get Item by ID
+``` bash
+    curl --location 'http://localhost:8080/items/1'
 ```
 
+- Increment Stock
+``` bash
+    curl --location --request PUT 'http://localhost:8080/items/1/increment-stock' \
+    --header 'Content-Type: application/json' \
+    --data '{
+        "quantity": 3
+    }'
+```
 
+- Decrement Stock
+``` bash
+    curl --location --request PUT 'http://localhost:8080/items/1/decrement-stock' \
+    --header 'Content-Type: application/json' \
+    --data '{
+        "quantity": 3
+    }'
+```
 
+## Authors ✒️
 
-## Autores ✒️
-
-* **Huallpa Nestor** - *Trabajo Inicial* - [nhuallpa](https://www.linkedin.com/in/nestor-huallpa-7239b011)
+* **Huallpa Nestor** - *Initial Work* - [Linkedin](https://www.linkedin.com/in/nestor-huallpa-7239b011)
 

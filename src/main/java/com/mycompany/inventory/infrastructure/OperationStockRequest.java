@@ -1,4 +1,4 @@
-package com.micompania.inventario.infrastructure;
+package com.mycompany.inventory.infrastructure;
 
 import lombok.Data;
 import lombok.ToString;
